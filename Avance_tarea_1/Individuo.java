@@ -29,8 +29,14 @@ public class Individuo {
     public static String getStateDescription(){
         return "x,\ty";
     }
+    public int getEstado(){
+        return this.estado;
+    }
+    public void setEstado(int newEstado){
+        this.estado=newEstado;
+    }
     public String getState() {
-        return x + "\t" + y;
+        return x + "\t" + y + "\n";
     }
     public void computeNextState(double delta_t) { //computar siguiente movimiento aleatorio
         double r=Math.random();

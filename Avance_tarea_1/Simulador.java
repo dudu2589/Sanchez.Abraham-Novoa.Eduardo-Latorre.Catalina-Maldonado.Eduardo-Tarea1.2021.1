@@ -13,6 +13,9 @@ public class Simulador {
     }
     
     private void printStateDescription(){;
+        for(int i=0; i<this.comuna.getListSize(); i++){
+            out.println("Persona " + (i+1) + " estado = " + this.comuna.getEstadoPerson(i)+"\n");
+        }
         String s="time\tx\ty";
         //+ Comuna.getStateDescription();
         out.println(s);
@@ -20,9 +23,13 @@ public class Simulador {
     
     private void printState(double t){
         DecimalFormat df = new DecimalFormat("#.##");
-        String s = df.format(t) + "\t";
-        s+= comuna.getState();
-        out.println(s);
+        for(int i=0;i<this.comuna.getListSize();i++){
+            String s = df.format(t) + "\t";
+            out.println("Persona " + (i+1) + "\n");
+            s+= comuna.getState(i);
+            out.println(s);
+        }
+        out.println("----------------------------------------------------\n");
     }
 
     /**
@@ -33,10 +40,10 @@ public class Simulador {
     public void simulate (double delta_t, double endTime, double samplingTime) {  // simulate time passing
         double t=0;
         printStateDescription();
-        printState(t);
+        //printState(t);
         while (t<endTime) {// recorrer durante el tiempo
             for(double nextStop=t+samplingTime; t<nextStop; t+=delta_t) {
-                DecimalFormat df = new DecimalFormat("#.##");
+    
                 comuna.computeNextState(delta_t); // compute its next state based on current global state
                 comuna.updateState();            // update its state
                 printState(t);

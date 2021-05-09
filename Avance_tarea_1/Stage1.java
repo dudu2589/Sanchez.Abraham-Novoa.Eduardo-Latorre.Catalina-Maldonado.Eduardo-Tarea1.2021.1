@@ -13,7 +13,8 @@ public class Stage1 {
         System.out.println("File: "+args[0]);
         double simulationDuration = s.nextDouble(); //_Primer numero ingresado
         System.out.println("Simulation time: "+simulationDuration);
-        double CantidadIndividuos = s.nextDouble(); // new
+        double cantidadIndividuos = s.nextDouble(); // new
+        double cantidadInfectados = s.nextDouble(); // new
         s.nextLine(); // se salta 2 , 3 y 4
         double comunaWidth = s.nextDouble(); //_5
         double comunaLength = s.nextDouble();
@@ -24,8 +25,12 @@ public class Stage1 {
         double samplingTime = 1.0;  // 1 [s]
         
         Comuna comuna = new Comuna(comunaWidth, comunaLength); //1
-        Individuo person = new Individuo(comuna, speed, deltaAngle); //2
-        comuna.setPerson(person);
+
+        for(int i=0; i<cantidadIndividuos;i++){
+            Individuo person = new Individuo(comuna, speed, deltaAngle); //2
+            comuna.setPerson(person);
+        }
+        comuna.Infectados_random(cantidadInfectados);
         Simulador sim = new Simulador(System.out, comuna); //3
         sim.simulate(delta_t, simulationDuration,samplingTime);
     }
