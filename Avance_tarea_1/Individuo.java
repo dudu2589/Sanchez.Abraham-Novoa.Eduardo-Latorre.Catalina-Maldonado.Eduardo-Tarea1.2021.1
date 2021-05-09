@@ -23,7 +23,7 @@ public class Individuo {
         this.comuna = comuna;
         this.speed = speed;
         this.deltaAngle = deltaAngle;
-        this.x = Math.round(r*(comuna.getWidth())); 
+        this.x = Math.round(r*(comuna.getWidth())); //Verificar si funciona bien el r como variable en vez de usar Math.random()
         this.y = Math.round(Math.random()*(comuna.getHeight()));
         angle = Math.round(Math.random()*2*Math.PI);
     }
