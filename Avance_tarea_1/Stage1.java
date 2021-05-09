@@ -10,6 +10,7 @@ public class Stage1 {
             System.exit(-1);
         }
         Scanner s=new Scanner(new File(args[0]));
+        System.out.print("\n----------------------------------------------------\n");
         System.out.println("File: "+args[0]);
         double simulationDuration = s.nextDouble(); //_Primer numero ingresado
         System.out.println("Simulation time: "+simulationDuration);
@@ -21,6 +22,7 @@ public class Stage1 {
         double speed = s.nextDouble();
         double delta_t = s.nextDouble();
         System.out.println("delta_t: " + delta_t);
+        System.out.print("----------------------------------------------------\n");
         double deltaAngle = s.nextDouble();
         double samplingTime = 1.0;  // 1 [s]
         

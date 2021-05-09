@@ -4,6 +4,7 @@ public class Individuo {
     private Comuna comuna;
     private int estado; //(0=suseptible a infectarse / 1=infectado / 2=recuperado / 3=vacunado)
     private boolean mascarila; //(true = usa mascarilla / false = no usa mascarilla)
+    private double r=Math.random(); //seleccion numero random
     /*
     El individuo pertenece a x comuna
     posee una velocidad 
@@ -22,7 +23,7 @@ public class Individuo {
         this.comuna = comuna;
         this.speed = speed;
         this.deltaAngle = deltaAngle;
-        this.x = Math.round(Math.random()*(comuna.getWidth())); 
+        this.x = Math.round(r*(comuna.getWidth())); 
         this.y = Math.round(Math.random()*(comuna.getHeight()));
         angle = Math.round(Math.random()*2*Math.PI);
     }
@@ -39,7 +40,6 @@ public class Individuo {
         return x + "\t" + y + "\n";
     }
     public void computeNextState(double delta_t) { //computar siguiente movimiento aleatorio
-        double r=Math.random();
         this.angle+=delta_t;
         x_tPlusDelta=x+Math.round(speed*Math.cos(angle));
         y_tPlusDelta=y+Math.round(speed*Math.sin(angle));

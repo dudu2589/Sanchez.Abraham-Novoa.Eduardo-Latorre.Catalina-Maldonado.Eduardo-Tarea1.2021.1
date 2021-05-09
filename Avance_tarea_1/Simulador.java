@@ -14,10 +14,11 @@ public class Simulador {
     
     private void printStateDescription(){;
         for(int i=0; i<this.comuna.getListSize(); i++){
-            out.println("Persona " + (i+1) + " estado = " + this.comuna.getEstadoPerson(i)+"\n");
+            out.print("Persona " + (i+1) + " estado = " + this.comuna.getEstadoPerson(i)+"\n");
         }
         String s="time\tx\ty";
         //+ Comuna.getStateDescription();
+        out.println("----------------------------------------------------\n");
         out.println(s);
     }
     
@@ -42,8 +43,8 @@ public class Simulador {
         printStateDescription();
         //printState(t);
         while (t<endTime) {// recorrer durante el tiempo
-            for(double nextStop=t+samplingTime; t<nextStop; t+=delta_t) {
-    
+            for(double nextStop=t+samplingTime; t<=nextStop; t+=delta_t) {
+                //El t<=nextStop es para que considere el tiempo final
                 comuna.computeNextState(delta_t); // compute its next state based on current global state
                 comuna.updateState();            // update its state
                 printState(t);
