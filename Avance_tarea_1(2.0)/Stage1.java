@@ -11,24 +11,24 @@ public class Stage1 {
         }
         Scanner s=new Scanner(new File(args[0]));
         System.out.println("File: "+args[0]);
-        double simulationDuration = s.nextDouble(); //_Primer numero ingresado
+        double simulationDuration = s.nextDouble(); // duracion de simulacion 
         System.out.println("Simulation time: "+simulationDuration);
-        s.nextLine(); // se salta 2 , 3 y 4
-        double comunaWidth = s.nextDouble(); //_5
-        double comunaLength = s.nextDouble();
-        double speed = s.nextDouble();
-        System.out.println("Speed: " + speed);
-        double delta_t = s.nextDouble();
+        s.nextLine(); // salto a la siguiente linea
+        double comunaWidth = s.nextDouble(); // ancho de la comuna
+        double comunaLength = s.nextDouble(); // largo de la comuna 
+        double speed = s.nextDouble(); //velocidad de los individuos
+        System.out.println("Speed: " + speed); 
+        double delta_t = s.nextDouble(); // intervalos de tiempo en los que se evaluan la situacion del individuo
         System.out.println("delta_t: " + delta_t);
-        double deltaAngle = s.nextDouble();
+        double deltaAngle = s.nextDouble(); // Angulo base de movimiento de cada individuo
         double samplingTime = 1.0;  // 1 [s]
         
-        Comuna comuna = new Comuna(comunaWidth, comunaLength); //1
+        Comuna comuna = new Comuna(comunaWidth, comunaLength); // Creacion de comuna "comuna"
 
-        Individuo person = new Individuo(comuna, speed, deltaAngle); //2
-        comuna.setPerson(person);
+        Individuo person = new Individuo(comuna, speed, deltaAngle); // Creacion de un individuo
+        comuna.setPerson(person);// ubicar a la persona en la comuna
         
-        Simulador sim = new Simulador(System.out, comuna); //3
-        sim.simulate(delta_t, simulationDuration,samplingTime);
+        Simulador sim = new Simulador(System.out, comuna); //Creacion de la simulacion
+        sim.simulate_stage_1(delta_t, simulationDuration,samplingTime); // comienzo de la simulacion de pandemia
     }
 }

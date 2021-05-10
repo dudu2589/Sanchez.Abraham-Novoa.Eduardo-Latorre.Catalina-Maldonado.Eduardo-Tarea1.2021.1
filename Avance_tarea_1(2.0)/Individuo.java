@@ -9,11 +9,8 @@ public class Individuo {
     private int estado; //(0=suseptible a infectarse / 1=infectado / 2=recuperado / 3=vacunado)
     private boolean mascarilla; //(true = usa mascarilla / false = no usa mascarilla)
     private ArrayList<ArrayList<Double>> distancia_entre_personas = new ArrayList<ArrayList<Double>>();  
-    /*
-    El individuo pertenece a x comuna
-    posee una velocidad 
-    */
-    public Individuo(){
+   
+    public Individuo(){//constructor individuo
         x = 0;
         y = 0;
         speed = 0;
@@ -24,7 +21,7 @@ public class Individuo {
         estado = 0; //la gente por lo general esta sano
         mascarilla = false ; //la gente no nace con mascarilla
     }
-    public Individuo (Comuna comuna, double speed, double deltaAngle){
+    public Individuo (Comuna comuna, double speed, double deltaAngle){//constructor 2 individuo 
         this.comuna = comuna;
         this.speed = speed;
         this.deltaAngle = deltaAngle;
@@ -32,28 +29,26 @@ public class Individuo {
         this.y = Math.round(Math.random()*(comuna.getHeight()));
         this.angle = Math.round(Math.random()*2*Math.PI);
     }
-    public static String getStateDescription(){
-        return "x,\ty";
-    }
-    public int getEstado(){
+    public int getEstado(){//recibir estado de salud del individuo
         return this.estado;
     }
-    public void setEstado(int newEstado){
+    public void setEstado(int newEstado){//cambiar estado de salud del individuo
         this.estado=newEstado;
     }
-    public boolean getMascarilla(){
+    public boolean getMascarilla(){//recibir si el individuo  tiene o no tiene mascarilla 
         return this.mascarilla;
     }
-    public double getPorcentaje_infectado(){
-        return this.porcentaje_infectado;
-    }
-    public void setPorcentaje_infectado(double i){
-        this.porcentaje_infectado+=i;
-    }
-    public void setMascarilla(Boolean mascarilla){
+    public void setMascarilla(Boolean mascarilla){//poner o sacar mascarilla a individuo
         this.mascarilla=mascarilla;
     }
-    public String getState() {
+    public double getPorcentaje_infectado(){//recibir porcentaje de infeccion de un individuo
+        return this.porcentaje_infectado;
+    }
+    public void setPorcentaje_infectado(double i){//añadir porcentaje de infeccion a un individuo
+        this.porcentaje_infectado+=i;
+    }
+    
+    public String getState() {//imprimir posicion de individuo , su estado de salud y su uso de mascarilla
         return x + "\t" + y + "\nEstado: " + estado + "\nMascarilla: "+ mascarilla + "\n";
     }
     public void computeNextState(double delta_t) { //computar siguiente movimiento aleatorio
@@ -83,6 +78,9 @@ public class Individuo {
     }
     ////////////////////////
     public double promedio(ArrayList<Double> lista){
+        /*calcular promedio de la distancia en la que se encuentra
+        dos individuos en un periodo de tiempo de 1 segundo
+        */
         double suma=0;
         for(int i=0;i<lista.size();i++){
             suma+=lista.get(i);
@@ -90,13 +88,24 @@ public class Individuo {
         return suma/lista.size();
     }
     public void listAppend(ArrayList<Double> lista){
+        /*
+        A cada persona en su lista se le agrega un bloque donde iran
+        las distancias entre un individuo y la gente a su alrededor   
+        */
         distancia_entre_personas.add(lista);
     } 
     public void list_in_listAppend(double distancia , int i){
+        /*
+        cada bloque de distancia tiene distancias que se toman a travez de 
+        el intervalo de tiempo delta_t
+        */
         distancia_entre_personas.get(i).add(distancia);
     }
 
     public void interaccionIndividuos(Individuo individuo_cercano,int i){
+        /*
+        Calcula la distancia en la que se encuentran 2 personas 
+        */
         double distancia;
         distancia = Math.pow((Math.pow((this.x - individuo_cercano.x),2)+Math.pow((this.y - individuo_cercano.y),2)),(0.5));
         distancia_entre_personas.get(i).add(distancia);
@@ -104,6 +113,12 @@ public class Individuo {
     }
 
     public void probabilidad_de_infeccion(Individuo individuo_cercano, double distancia_infeccion , int i){
+        /*
+        entre 2 individuos , sabiendo su promedio de distancias tomadas de los delta_t en 1 segundo
+        , el uso de mascarillas entre ambos individuos y el estado de cada uno, 
+        y sabiedo la distancia maxima a la que pueden estar 2 individuos , se calcula la probabilidad
+        de infeccion 
+        */
         double distancia=0;
         distancia = promedio(distancia_entre_personas.get(i));
         if(distancia<=distancia_infeccion){
