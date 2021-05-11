@@ -12,9 +12,7 @@ public class Stage3 {
             System.exit(-1);
         }
         Scanner s=new Scanner(new File(args[0]));
-        System.out.println("File: "+args[0]);
         double simulationDuration = s.nextDouble(); 
-        System.out.println("Simulation time: "+simulationDuration);
         double cantidadIndividuos = s.nextDouble(); 
         double cantidadInfectados = s.nextDouble(); 
         s.nextLine(); 
@@ -22,7 +20,6 @@ public class Stage3 {
         double comunaLength = s.nextDouble();
         double speed = s.nextDouble();
         double delta_t = s.nextDouble();
-        System.out.println("delta_t: " + delta_t);
         double deltaAngle = s.nextDouble();
         double distanciamax = s.nextDouble();
         double porcentaje_gente_con_mascarilla=s.nextDouble();//porcentaje de infectados y no infectados que usaran mascarilla

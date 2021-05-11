@@ -49,11 +49,10 @@ public class Individuo {
     }
     
     public String getState() {//imprimir posicion de individuo , su estado de salud y su uso de mascarilla
-        return x + "\t" + y + "\nEstado: " + estado + "\nMascarilla: "+ mascarilla + "\n";
+        return x + "\t" + y ;
     }
     public void computeNextState(double delta_t) { //computar siguiente movimiento aleatorio
-        double r=Math.random();
-
+    
         this.angle+=deltaAngle;
         x_tPlusDelta=x+Math.round(speed*Math.cos(angle));
         y_tPlusDelta=y+Math.round(speed*Math.sin(angle));

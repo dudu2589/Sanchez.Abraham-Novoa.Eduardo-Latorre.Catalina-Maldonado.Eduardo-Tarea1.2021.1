@@ -13,25 +13,19 @@ public class Simulador {
     }
     
     private void printStateDescription(){//impresion de descripcion de estado
-        for(int i=0; i<this.comuna.getListSize(); i++){
-            out.println("Persona " + (i+1) + " estado = " + this.comuna.getEstadoPerson(i)+"\n");
-        }
-        String s="time\tx\ty";
+        String s="Persona\ttime\tx\ty";
         //+ Comuna.getStateDescription();
         out.println(s);
     }
     
     private void printState(double t){//ipresion de posicion de cada individuo
-        DecimalFormat df = new DecimalFormat("#.##");
-        out.println("----------------------------------------------------\n");
+        //DecimalFormat df = new DecimalFormat("#,##");
         for(int i=0;i<this.comuna.getListSize();i++){
-            String s = df.format(t) + "\t";
-            out.println("Persona " + (i+1) + "\n");
+            String s ="Persona " + (i+1) + "\t"+ (t) + "\t";
             s+= comuna.getState(i);
             out.println(s);
         }
         comuna.update_estado_gente();
-        out.println("----------------------------------------------------\n");
     }
 
     /**
@@ -59,11 +53,11 @@ public class Simulador {
     public void simulate (double delta_t, double endTime, double samplingTime, double distanciamax) {  // simulate time passing for stage 2. 3 and 4
         double t=0;
         double static_time=0;
+        comuna.estado_inicial_final();
         printStateDescription();
         //printState(t);
         while (static_time<endTime) {// recorrer durante el tiempo
             for(double nextStop=static_time+samplingTime; t<=nextStop; t+=delta_t) {
-                out.println("valor de nextStop: " + nextStop);
                 comuna.computeNextState(delta_t); // compute its next state based on current global state
                 comuna.updateState();            // update its state
                 comuna.distancia_entre_individuos();
@@ -72,9 +66,9 @@ public class Simulador {
             }
             comuna.probabilidad_de_infeccion(distanciamax);
             comuna.clear();
-            out.println("STOP\n");
             static_time+=samplingTime;
             //Problema : se le suma 1 delta_t de mas
         }
+        comuna.estado_inicial_final();
     }
 }
