@@ -10,9 +10,7 @@ public class Stage2 {
             System.exit(-1);
         }
         Scanner s=new Scanner(new File(args[0]));
-        System.out.println("File: "+args[0]);
         double simulationDuration = s.nextDouble(); 
-        System.out.println("Simulation time: "+simulationDuration);
         double cantidadIndividuos = s.nextDouble(); //Cantidad de individuos en una comuna
         double cantidadInfectados = s.nextDouble(); //Cantidad de infectados en una comuna 
         s.nextLine(); 
@@ -20,7 +18,6 @@ public class Stage2 {
         double comunaLength = s.nextDouble();
         double speed = s.nextDouble();
         double delta_t = s.nextDouble();
-        System.out.println("delta_t: " + delta_t);
         double deltaAngle = s.nextDouble();
         double distanciamax = s.nextDouble();//distancia maxima que deben estar las personas , inferior a eso , contagio 
         s.next();

@@ -139,6 +139,8 @@ public class Comuna {
                 this.rec+=1;
             }
         }
+    }
+    public void estado_inicial_final(){
         System.out.println("| infectadas: "+this.inf+" | suseptibles a infectarse: "+this.sus+" | Recuperados: "+this.rec+"\n");
     }
     public void Mascarilla_random(double cant_gente_mascarilla){
