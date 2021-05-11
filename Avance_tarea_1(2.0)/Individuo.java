@@ -101,7 +101,11 @@ public class Individuo {
         */
         distancia_entre_personas.get(i).add(distancia);
     }
-
+    public void list_in_listClear(int i){//limpiar distancias evaluadas en 1 segundo para evaluarlas en un segundo proximo
+        for(int j=0;j<distancia_entre_personas.get(i).size();j++){
+            distancia_entre_personas.get(i).remove(0);
+        };
+     }
     public void interaccionIndividuos(Individuo individuo_cercano,int i){
         /*
         Calcula la distancia en la que se encuentran 2 personas 
@@ -122,7 +126,6 @@ public class Individuo {
         double distancia=0;
         distancia = promedio(distancia_entre_personas.get(i));
         if(distancia<=distancia_infeccion){
-            System.out.println("LLEGO ACA , TENEMOS PROBABILIDAD DE INFECCION");
             if(this.estado==1 && individuo_cercano.estado==0 ){
                 individuo_cercano.setPorcentaje_infectado(comuna.prob_infeccion(this.mascarilla,individuo_cercano));
                 if(individuo_cercano.getPorcentaje_infectado()>=1)

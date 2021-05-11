@@ -71,6 +71,7 @@ public class Simulador {
                 //if(t==nextStop)break;
             }
             comuna.probabilidad_de_infeccion(distanciamax);
+            comuna.clear();
             out.println("STOP\n");
             static_time+=samplingTime;
             //Problema : se le suma 1 delta_t de mas

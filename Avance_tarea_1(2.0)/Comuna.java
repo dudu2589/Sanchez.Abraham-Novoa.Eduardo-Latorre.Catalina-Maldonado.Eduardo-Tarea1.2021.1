@@ -22,7 +22,7 @@ public class Comuna {
     public double getHeight() {// recibir largo de comuna
         return this.territory.getHeight();
     }
-    public int getEstadoPerson(int i){ r// recibir estado de salud de la persona 
+    public int getEstadoPerson(int i){ // recibir estado de salud de la persona 
         return this.personas.get(i).getEstado();
     }
     public void setPerson(Individuo person){// ubicar persona en comuna
@@ -39,6 +39,14 @@ public class Comuna {
     // include others methods as necessary
     /*
     */
+
+    public void clear(){//eliminar distancias usadas en 1 segundo
+        for(int i=0;i<personas.size();i++){
+            for(int j=0;j<(personas.size()-1);j++){
+                personas.get(i).list_in_listClear(j);
+            }
+        }
+    }
     public void setlist(){
     /* cada individuo tiene una lista con las posiciones de cada persona con la que se crusa, por lo que
         se crean sublistas dentro de una lista de individuo , registradas las distancia entre una persona
