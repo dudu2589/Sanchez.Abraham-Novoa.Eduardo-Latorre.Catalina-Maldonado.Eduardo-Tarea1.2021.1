@@ -1,0 +1,4 @@
+1. Simular el espacio en si . 
+2. Simular 1 punto
+3. Hacer que ese punto se mueva
+4. Hcer que el punto se mueva aleatoriamente 
