@@ -32,7 +32,7 @@ run2: $(MAIN2).class
 	$(JVM) $(MAIN2) $(FILE) > salida2.csv 
         
 run3: $(MAIN3).class
-	$(JVM) $(MAIN3) $(FILE) > salida3.csv 
+	$(JVM) $(MAIN3) $(FILE)
 	
 clean:
 	$(RM) *.class

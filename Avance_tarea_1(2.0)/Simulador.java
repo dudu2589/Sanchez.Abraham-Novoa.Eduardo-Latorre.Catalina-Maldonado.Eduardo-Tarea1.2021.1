@@ -21,7 +21,7 @@ public class Simulador {
     private void printState(double t){//ipresion de posicion de cada individuo
         //DecimalFormat df = new DecimalFormat("#,##");
         for(int i=0;i<this.comuna.getListSize();i++){
-            String s ="Persona " + (i+1) + "\t"+ (t) + "\t";
+            String s ="Persona " + (i+1) + "\t"+ Math.round(t*100.0)/100.0 + "\t";
             s+= comuna.getState(i);
             out.println(s);
         }

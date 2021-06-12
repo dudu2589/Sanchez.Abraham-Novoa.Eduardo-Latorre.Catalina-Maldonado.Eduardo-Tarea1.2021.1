@@ -1,10 +1,9 @@
 //import jdk.nashorn.internal.ir.BlockLexicalContext;
 import java.util.ArrayList;
+
 public class Individuo {
     private double x, y, speed, angle, deltaAngle;
-    private double seleccionAngulo, newAngle;
     private double x_tPlusDelta, y_tPlusDelta;
-    private double redondeoX,redondeoY;
     private double porcentaje_infectado;
     private Comuna comuna;
     private int estado; //(0=suseptible a infectarse / 1=infectado / 2=recuperado / 3=vacunado)
@@ -28,7 +27,7 @@ public class Individuo {
         this.deltaAngle = deltaAngle;
         this.x = Math.round(Math.random()*(comuna.getWidth())); 
         this.y = Math.round(Math.random()*(comuna.getHeight()));
-        this.angle = Math.round(Math.random()*2*Math.PI*10)/10.0;
+        this.angle = Math.random()*2*Math.PI;
     }
     public int getEstado(){//recibir estado de salud del individuo
         return this.estado;
@@ -50,61 +49,31 @@ public class Individuo {
     }
     
     public String getState() {//imprimir posicion de individuo , su estado de salud y su uso de mascarilla
-        return x + ";" + y ;
+        return x + "\t" + y ;
     }
     public void computeNextState(double delta_t) { //computar siguiente movimiento aleatorio
-        angle = Math.round((Math.random()*2*Math.PI)*100)/100.0;
-        seleccionAngulo = Math.random(); //Genera un numero random entre 0 y 1 para saber si el delta Theta lo sumo o resto al angulo random generado, o bien esete se mantiene
+    
+        double angulo_aleatorio = Math.random()*((angle + deltaAngle) - (angle - deltaAngle) + 1) + (angle - deltaAngle);
+        x_tPlusDelta=x+Math.round(speed*Math.cos(angulo_aleatorio));
+        y_tPlusDelta=y+Math.round(speed*Math.sin(angulo_aleatorio));
         
-        if (seleccionAngulo<0.4) {
-            newAngle = angle-(Math.random()*deltaAngle);
+        if(x_tPlusDelta < 0){   // rebound logic
+            x_tPlusDelta=0;
         }
-        else if(seleccionAngulo>=0.4 && seleccionAngulo<=0.6) {
-           newAngle = angle;
+        else if( x_tPlusDelta > this.comuna.getWidth()){
+            x_tPlusDelta=this.comuna.getWidth();
         }
-        else if(seleccionAngulo>0.6){
-            newAngle = angle+(Math.random()*deltaAngle);
+        if(y_tPlusDelta < 0){   // rebound logic
+            y_tPlusDelta=0;
         }
-        x_tPlusDelta=x+Math.round(((speed*delta_t)*Math.cos(newAngle))*100)/100.0;
-        y_tPlusDelta=y+Math.round(((speed*delta_t)*Math.sin(newAngle))*100)/100.0;
-
-        while(x_tPlusDelta<0 || y_tPlusDelta<0 || x_tPlusDelta>this.comuna.getWidth() || y_tPlusDelta>this.comuna.getHeight()){
-            angle = Math.round(Math.random()*2*Math.PI);
-            seleccionAngulo = Math.random(); //Genera un numero random entre 0 y 1 para saber si el delta Theta lo sumo o resto al angulo random generado, o bien esete se mantiene
-            if (seleccionAngulo<0.4) {
-                newAngle = angle-(Math.random()*deltaAngle);
-            }
-            else if(seleccionAngulo>=0.4 && seleccionAngulo<=0.6) {
-            newAngle = angle;
-            }
-            else if(seleccionAngulo>0.6){
-                newAngle = angle+(Math.random()*deltaAngle);
-            }
-            if(x_tPlusDelta < 0){   // rebound logic
-                x_tPlusDelta=0;
-                x_tPlusDelta=x+Math.round(((speed*delta_t)*Math.cos(newAngle))*100)/100.0;
-            }
-            else if( x_tPlusDelta >= this.comuna.getWidth()){
-                x_tPlusDelta=this.comuna.getWidth();
-                x_tPlusDelta=x-Math.round(((speed*delta_t)*Math.cos(newAngle))*100)/100.0;
-            }
-            else if(y_tPlusDelta < 0){   // rebound logic
-                y_tPlusDelta=0;
-                y_tPlusDelta=y+Math.round(((speed*delta_t)*Math.sin(newAngle))*100)/100.0;
-            }
-            else if( y_tPlusDelta >= this.comuna.getHeight()){
-                y_tPlusDelta=this.comuna.getHeight();
-                y_tPlusDelta=y-Math.round(((speed*delta_t)*Math.sin(newAngle))*100)/100.0;
-            }
+        else if( y_tPlusDelta > this.comuna.getHeight()){
+            y_tPlusDelta=this.comuna.getHeight();
         }
+        
     }
     public void updateState(){ //actualizar 
-        redondeoX = Math.round(x_tPlusDelta);
-        redondeoY = Math.round(y_tPlusDelta);
         this.x=x_tPlusDelta;
         this.y=y_tPlusDelta;
-        //this.x=redondeoX;
-        //this.y=redondeoY;
     }
     ////////////////////////
     public double promedio(ArrayList<Double> lista){
