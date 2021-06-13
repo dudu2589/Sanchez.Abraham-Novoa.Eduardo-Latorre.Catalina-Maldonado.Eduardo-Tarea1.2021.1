@@ -191,10 +191,10 @@ public class Comuna {
             this.vacunatorio_pos.add(pos_random);
         }else if((pos_random + vacsize)<this.getWidth()){
             this.vacunatorio_pos.add(pos_random);
-            System.out.println(this.vacunatorio_pos.get(0));
+            //System.out.println(this.vacunatorio_pos.get(0));
             this.vacunatorio_pos.add(pos_random);
             this.vacunatorio_pos.add(pos_random + vacsize);
-            System.out.println(this.vacunatorio_pos.get(2));
+            //System.out.println(this.vacunatorio_pos.get(2));
             this.vacunatorio_pos.add(pos_random + vacsize);
         }
         return this.vacunatorio_pos;

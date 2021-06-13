@@ -14,9 +14,9 @@ public class Stage4 {
             System.exit(-1);
         }
         Scanner s=new Scanner(new File(args[0]));
-        System.out.println("File: "+args[0]);
+        //System.out.println("File: "+args[0]);
         double simulationDuration = s.nextDouble(); 
-        System.out.println("Simulation time: "+simulationDuration);
+        //System.out.println("Simulation time: "+simulationDuration);
         double cantidadIndividuos = s.nextDouble(); 
         double cantidadInfectados = s.nextDouble(); 
         double tiempo_para_recuperacion = s.nextDouble();// new
@@ -24,7 +24,7 @@ public class Stage4 {
         double comunaLength = s.nextDouble();
         double speed = s.nextDouble();
         double delta_t = s.nextDouble();
-        System.out.println("delta_t: " + delta_t);
+        //System.out.println("delta_t: " + delta_t);
         double deltaAngle = s.nextDouble();
         double distanciamax = s.nextDouble();
         double porcentaje_gente_con_mascarilla=s.nextDouble();
@@ -50,11 +50,11 @@ public class Stage4 {
         //vacunatorio
         ArrayList <Double> pos = comuna.posicion_aleatoria_vacunatorio(VacSize);
         Vacunatorio vacunatorio = new Vacunatorio(pos.get(0),pos.get(1),pos.get(2),pos.get(3),tiempo_para_recuperacion);
-        System.out.println("MInimo: " + vacunatorio.getminWidth());
-        System.out.println("MAximo: " + vacunatorio.getWidth());
+        //System.out.println("MInimo: " + vacunatorio.getminWidth());
+        //System.out.println("MAximo: " + vacunatorio.getWidth());
         vacunatorio.setVacunas(NumVac);
         //simulacion
         Simulador sim = new Simulador(System.out, comuna); 
-        sim.simulate(delta_t, simulationDuration,samplingTime,distanciamax,VacTime,vacunatorio);
+        sim.simulate4(delta_t, simulationDuration,samplingTime,distanciamax,VacTime,vacunatorio);
     }
 }

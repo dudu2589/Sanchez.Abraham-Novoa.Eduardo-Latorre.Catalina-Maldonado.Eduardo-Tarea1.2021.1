@@ -206,8 +206,8 @@ public class Individuo {
                     }
                     y_tPlusDelta = y;
                     this.time_rec+=delta_t;
-                    System.out.println("a: " + this.time_rec);
-                    System.out.println("b: " + vacunatorio.getTime_rec());
+                    //System.out.println("a: " + this.time_rec);
+                    //System.out.println("b: " + vacunatorio.getTime_rec());
                     if(this.time_rec == vacunatorio.getTime_rec()){
                         this.estado = 2;
                     }    

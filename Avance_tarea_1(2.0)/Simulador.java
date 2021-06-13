@@ -50,10 +50,31 @@ public class Simulador {
         }
     }
 
-    public void simulate (double delta_t, double endTime, double samplingTime, double distanciamax, double VacTime, Vacunatorio vacunatorio) {  // simulate time passing for stage 2. 3 and 4
+    public void simulate (double delta_t, double endTime, double samplingTime, double distanciamax) {  // simulate time passing for stage 2. 3 and 4
         double t=0;
         double static_time=0;
         comuna.estado_inicial_final();
+        printStateDescription();
+        //printState(t);
+        while (static_time<endTime) {// recorrer durante el tiempo
+            for(double nextStop=static_time+samplingTime; t<=nextStop; t+=delta_t) {
+                comuna.computeNextState(delta_t); // compute its next state based on current global state
+                comuna.updateState();            // update its state
+                comuna.distancia_entre_individuos();
+                printState(t);
+                //if(t==nextStop)break;
+            }
+            comuna.probabilidad_de_infeccion(distanciamax);
+            comuna.clear();
+            static_time+=samplingTime;
+            //Problema : se le suma 1 delta_t de mas
+        }
+        comuna.estado_inicial_final();
+    }
+    public void simulate4 (double delta_t, double endTime, double samplingTime, double distanciamax, double VacTime, Vacunatorio vacunatorio) {  // simulate time passing for stage 2. 3 and 4
+        double t=0;
+        double static_time=0;
+        //comuna.estado_inicial_final();
         printStateDescription();
         //printState(t);
         while (static_time<endTime) {// recorrer durante el tiempo
@@ -75,11 +96,11 @@ public class Simulador {
             comuna.clear();
             static_time+=samplingTime;
             if(static_time == VacTime){ // verifica en que momento el vacunatorio empieza a abrirse / aparecer en la comuna
-                System.out.println("\nVacunatorio abierto\n");
+                //System.out.println("\nVacunatorio abierto\n");
                 comuna.CreacionVacunatorio(vacunatorio);
             }
             //Problema : se le suma 1 delta_t de mas
         }
-        comuna.estado_inicial_final();
+        //comuna.estado_inicial_final();
     }
 }

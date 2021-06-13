@@ -38,7 +38,7 @@ run3: $(MAIN3).class
 	$(JVM) $(MAIN3) $(FILE) > salida3.csv
 
 run4: $(MAIN4).class
-	$(JVM) $(MAIN4) $(FILE)
+	$(JVM) $(MAIN4) $(FILE) > salida4.csv
 	
 clean:
 	$(RM) *.class
