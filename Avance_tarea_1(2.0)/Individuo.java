@@ -5,6 +5,8 @@ public class Individuo {
     private double x, y, speed, angle, deltaAngle;
     private double x_tPlusDelta, y_tPlusDelta;
     private double porcentaje_infectado;
+    private double df; //persona dentro = 1 , persona fuera = 0
+    private double time_rec;
     private Comuna comuna;
     private int estado; //(0=suseptible a infectarse / 1=infectado / 2=recuperado / 3=vacunado)
     private boolean mascarilla; //(true = usa mascarilla / false = no usa mascarilla)
@@ -17,7 +19,8 @@ public class Individuo {
         angle = 0;
         deltaAngle = 0;
         porcentaje_infectado = 0;
-
+        df = 0;
+        time_rec = 0;
         estado = 0; //la gente por lo general esta sano
         mascarilla = false ; //la gente no nace con mascarilla
     }
@@ -52,22 +55,26 @@ public class Individuo {
         return x + "\t" + y ;
     }
     public void computeNextState(double delta_t) { //computar siguiente movimiento aleatorio
-    
+        
         double angulo_aleatorio = Math.random()*((angle + deltaAngle) - (angle - deltaAngle) + 1) + (angle - deltaAngle);
         x_tPlusDelta=x+Math.round(speed*Math.cos(angulo_aleatorio));
         y_tPlusDelta=y+Math.round(speed*Math.sin(angulo_aleatorio));
         
         if(x_tPlusDelta < 0){   // rebound logic
             x_tPlusDelta=0;
+            this.angle = Math.random()*2*Math.PI;
         }
         else if( x_tPlusDelta > this.comuna.getWidth()){
             x_tPlusDelta=this.comuna.getWidth();
+            this.angle = Math.random()*2*Math.PI;
         }
         if(y_tPlusDelta < 0){   // rebound logic
             y_tPlusDelta=0;
+            this.angle = Math.random()*2*Math.PI;
         }
         else if( y_tPlusDelta > this.comuna.getHeight()){
             y_tPlusDelta=this.comuna.getHeight();
+            this.angle = Math.random()*2*Math.PI;
         }
         
     }
@@ -136,5 +143,116 @@ public class Individuo {
             }
         }
     }
+    //Funciones Stage 4 vacunatorio
+    public double x_recursivo(Double x_pos , Double x_min , Double x_max){
+        /*
+            Aleja a un infectado o a un recuperado del vacunatorio en el eje x
+        */
+        double x_pos_return = 0;
+        if (x_pos>x_min && x_pos<x_max){
+            if(Math.abs(x_pos-x_min) > Math.abs(x_pos-x_max)){
+                x_pos_return = x_recursivo(x_pos+1, x_min, x_max);
+            }else{
+                x_pos_return = x_recursivo(x_pos-1, x_min, x_max);
+            }
+        }else{
+            x_pos_return = x_pos;
+        }
+        return x_pos_return;
+    }
+    public double y_recursivo(Double y_pos , Double y_min , Double y_max){
+        /*
+            Aleja a un infectado o a un recuperado del vacunatorio en el eje y
+        */
+        double y_pos_return = 0;
+        if (y_pos>y_min && y_pos<y_max){
+            if(Math.abs(y_pos-y_min) > Math.abs(y_pos-y_max)){
+                y_pos_return = y_recursivo(y_pos+1, y_min, y_max);
+            }else{
+                y_pos_return = y_recursivo(y_pos-1, y_min, y_max);
+            }
+        }else{
+            y_pos_return = y_pos;
+        }
+        return y_pos_return;
+    }
+    public double getdf(){ //df = dentro o fuera , retorna si esta dentro o fuera del vacunatorio
+        return this.df;
+    }
+    public void computeNextState_vacunas(Double delta_t, Vacunatorio vacunatorio){
+        /*
+              Ya posicionado el vacunatorio en la comuna, 
+            las personas deberan moverse en la comuna con ciertas condiciones:
+            - si la persona aun no esta vacunada, debe dirigirse directamente al vacunatorio
+            - si la persona esta contagiada, no puede entrar al vacunatorio
+            - si la persona esta recuperada, esta no podra entrar al vacunatorio ni contagiarse
+            - solo una cierta cantidad de personas podran entrar al vacunatorio dependiendo de las vacunas disponibles. 
+        
+        */
+        double velocidad = 2.0;
+        if(this.estado==1 || this.estado==2 || (this.estado == 0 && vacunatorio.getcapacidad()==vacunatorio.getVacunas())){
+            double angulo_aleatorio = Math.random()*((angle + deltaAngle) - (angle - deltaAngle) + 1) + (angle - deltaAngle);
+            x_tPlusDelta=x+Math.round(speed*Math.cos(angulo_aleatorio));
+            x_tPlusDelta=x_recursivo(x_tPlusDelta,vacunatorio.getminWidth(),vacunatorio.getWidth());
+            y_tPlusDelta=y+Math.round(speed*Math.sin(angulo_aleatorio));
+            y_tPlusDelta=y_recursivo(y_tPlusDelta,vacunatorio.getminHeight(),vacunatorio.getHeight());
+        }else if(this.estado == 0 && vacunatorio.getcapacidad()!=vacunatorio.getVacunas()){
+            if(x>vacunatorio.getminWidth() && x<vacunatorio.getWidth()){
+                x_tPlusDelta = x;
+                if(y>vacunatorio.getminHeight() && y<vacunatorio.getHeight()){
+                    if(this.df == 0){
+                        this.df =1;
+                        vacunatorio.addpersona_capacidad();
+                    }
+                    y_tPlusDelta = y;
+                    this.time_rec+=delta_t;
+                    System.out.println("a: " + this.time_rec);
+                    System.out.println("b: " + vacunatorio.getTime_rec());
+                    if(this.time_rec == vacunatorio.getTime_rec()){
+                        this.estado = 2;
+                    }    
+                }else{
+                    if(Math.abs(y - vacunatorio.getminHeight()) > Math.abs(y - vacunatorio.getHeight())){
+                        y_tPlusDelta = y - velocidad;
+                    }else{
+                        y_tPlusDelta = y + velocidad;
+                    }
+                }
+            }else{
+                if(Math.abs(x - vacunatorio.getminWidth()) > Math.abs(x - vacunatorio.getWidth())){
+                    x_tPlusDelta = x - velocidad;
+                }else{
+                    x_tPlusDelta = x + velocidad;
+                }
+                if(y>vacunatorio.getminHeight() && y<vacunatorio.getHeight()){
+                    y_tPlusDelta = y;
+                }else{
+                    if(Math.abs(y - vacunatorio.getminHeight()) > Math.abs(y - vacunatorio.getHeight())){
+                        y_tPlusDelta = y - velocidad;
+                    }else{
+                        y_tPlusDelta = y + velocidad;
+                    }
+                }
+            }
+        }
 
+        ///////////////////////////////////////////////////////////////////////
+        if(x_tPlusDelta < 0){   // rebound logic
+            x_tPlusDelta=0;
+            this.angle = Math.random()*2*Math.PI;
+        }
+        else if( x_tPlusDelta > this.comuna.getWidth()){
+            x_tPlusDelta=this.comuna.getWidth();
+            this.angle = Math.random()*2*Math.PI;
+        }
+        if(y_tPlusDelta < 0){   // rebound logic
+            y_tPlusDelta=0;
+            this.angle = Math.random()*2*Math.PI;
+        }
+        else if( y_tPlusDelta > this.comuna.getHeight()){
+            y_tPlusDelta=this.comuna.getHeight();
+            this.angle = Math.random()*2*Math.PI;
+        }
+        
+    }
 }

@@ -6,15 +6,20 @@ import java.util.ArrayList;
 
 public class Comuna {
     private ArrayList<Individuo> personas = new ArrayList<Individuo>(); // lista que contendra a los individuos de la comuna
+    private ArrayList<Double> vacunatorio_pos = new ArrayList<Double>(); // lista que genera la posicion aleatoria del vacunatorio
     private Rectangle2D territory; // Alternatively: double width, length;
     private double p0 , p1 , p2;// 0 ninguo usa mascarilla , 1 solo uno usa mascarilla , 2 ambos usan mascarilla
     private double inf , rec , sus;//infectados , recuperados , suseptibles a infectarse
+
+    private Vacunatorio vacunatorio; //vacunatorio que aparecera luego de vactime segundos
+    public double v;//si v=0 , el vacunatorio no se encuentra disponible,si vale 1, el vacunatorio esta disponible
 
     public Comuna(){ //constructor de la comuna 
         territory = new Rectangle2D.Double(0, 0, 1000, 1000); // 1000x1000 m²;
     }
     public Comuna(double width, double length){ //asignar ancho y largo a la comuna
         territory = new Rectangle2D.Double(0,0, width, length);
+        this.v = 0 ;
     }
     public double getWidth() { //recibir ancho de comuna
         return this.territory.getWidth();
@@ -105,6 +110,7 @@ public class Comuna {
         */
         for(int i=0;i<personas.size();i++){
             for(int j=(i+1);j<personas.size();j++){
+                if(personas.get(i).getdf()==0)
                 personas.get(i).probabilidad_de_infeccion(personas.get(j),distancia_infeccion,i);
             }
         }
@@ -172,5 +178,49 @@ public class Comuna {
     }
     ///////////////////////////////////////77
     //Vacunatorio (Stage 4)
+    public ArrayList<Double> posicion_aleatoria_vacunatorio(Double vacsize){
+        /*
+        Determina la futura posicion de un vacunatorio de forma de cuadrado a la comuna
+        sin salirse de los margenes de esta. 
+        */
+        Double pos_random = Math.random()*(this.getWidth());
+        if((pos_random + vacsize)>this.getWidth()){
+            this.vacunatorio_pos.add(pos_random - vacsize);
+            this.vacunatorio_pos.add(pos_random - vacsize);
+            this.vacunatorio_pos.add(pos_random);
+            this.vacunatorio_pos.add(pos_random);
+        }else if((pos_random + vacsize)<this.getWidth()){
+            this.vacunatorio_pos.add(pos_random);
+            System.out.println(this.vacunatorio_pos.get(0));
+            this.vacunatorio_pos.add(pos_random);
+            this.vacunatorio_pos.add(pos_random + vacsize);
+            System.out.println(this.vacunatorio_pos.get(2));
+            this.vacunatorio_pos.add(pos_random + vacsize);
+        }
+        return this.vacunatorio_pos;
+    }
+    public void CreacionVacunatorio(Vacunatorio vacunatorio){
+        /*
+            Creacion de un vacunatorio dentro de la comuna
+        */
+        this.vacunatorio = vacunatorio;
+        this.v = 1;
+    }
+    public Vacunatorio get_vacunatorio(){
+        //obtener los datos del vacunatorio dentro de la comuna
+        return this.vacunatorio;
+    }
+    public void computeNextState_vacunas (Double delta_t , Vacunatorio vacunatorio) {// calcular la siguiente ubicacion de la persona en la comuna
+        /*
+            Ya posicionado el vacunatorio en la comuna, 
+            las personas deberan moverse en la comuna con ciertas condiciones:
+            - si la persona aun no esta vacunada, debe dirigirse directamente al vacunatorio
+            - si la persona esta contagiada, no puede entrar al vacunatorio
+            - si la persona esta recuperada, esta no podra entrar al vacunatorio ni contagiarse
+            - solo una cierta cantidad de personas podran entrar al vacunatorio dependiendo de las vacunas disponibles. 
+        */
+        for(int i=0;i<personas.size();i++)
+            personas.get(i).computeNextState_vacunas(delta_t , vacunatorio);
+    }
 }
 

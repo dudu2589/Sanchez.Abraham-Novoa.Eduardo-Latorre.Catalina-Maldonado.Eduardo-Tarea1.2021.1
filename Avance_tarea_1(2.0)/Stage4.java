@@ -2,6 +2,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.ArrayList;
 /*
     objetivo: aleatoriamente poner mascarillas a la gente dependiendo tambien de un porcentaje de probabilidad
 */
@@ -47,10 +48,13 @@ public class Stage4 {
         comuna.Mascarilla_random(porcentaje_gente_con_mascarilla);
         
         //vacunatorio
-        Vacunatorio vacunatorio = new Vacunatorio(VacSize,VacSize);
+        ArrayList <Double> pos = comuna.posicion_aleatoria_vacunatorio(VacSize);
+        Vacunatorio vacunatorio = new Vacunatorio(pos.get(0),pos.get(1),pos.get(2),pos.get(3),tiempo_para_recuperacion);
+        System.out.println("MInimo: " + vacunatorio.getminWidth());
+        System.out.println("MAximo: " + vacunatorio.getWidth());
         vacunatorio.setVacunas(NumVac);
         //simulacion
         Simulador sim = new Simulador(System.out, comuna); 
-        sim.simulate(delta_t, simulationDuration,samplingTime,distanciamax);
+        sim.simulate(delta_t, simulationDuration,samplingTime,distanciamax,VacTime,vacunatorio);
     }
 }
