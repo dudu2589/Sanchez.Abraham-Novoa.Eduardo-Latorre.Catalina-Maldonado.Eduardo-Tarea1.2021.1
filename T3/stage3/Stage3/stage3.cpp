@@ -4,12 +4,13 @@
 #include <QCoreApplication>
 #include <iostream>
 #include <fstream>
+
 using namespace std;
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
     if (argc != 2){
-        cout << "Usage: stage2 <configurationFile.txt>" << endl;
+        cout << "Usage: stage3 <configurationFile.txt>" << endl;
         exit(-1);
     }
     ifstream fin(argv[1]);
@@ -27,14 +28,15 @@ int main(int argc, char *argv[])
     cout << d <<","<< M <<"," << p0 <<"," << p1 << ","<< p2 <<  endl;
     double samplingTime = 1.0;
     Comuna comuna(comunaWidth, comunaLength);
-    comuna.probabilidad(p0,0,0);
+    comuna.probabilidad(p0,p1,p2);
     for(int i = 0; i<N; i++){
         Pedestrian person(comuna, speed, deltaAngle);
         comuna.setPersons(person);
     }
     comuna.setVector();
     comuna.infectados_random(I);
-    Simulator sim(cout, comuna, delta_t, samplingTime , 2 ,d); // 2 = stage
+    comuna.Mascarilla_random(M);
+    Simulator sim(cout, comuna, delta_t, samplingTime , 3 ,d); // 3 = stage
     sim.startSimulation();
     return a.exec();
 }
