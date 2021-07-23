@@ -1,15 +1,25 @@
 Archivos para el funcionamiento optimo de la tarea:
--Archivo de entrada.txt
--Comuna.Cpp
--Pederastrian.Cpp
+-Archivo_de_entrada.txt
+-Comuna.cpp
+-Comuna.h
+-Pederastrian.cpp
+-Pedestrian.h
 -Makefile
--Salida.csv
--Simulador.Cpp
--Stage1.Cpp
--Stage2.Cpp
--Stage3.Cpp
--Stage4.Cpp
--Vacunatorio
+-Simulator.cpp
+-Simulator.h
+-Stage1.cpp
+-Stage1.h
+-Stage2.cpp
+-Stage2.h
+-Stage3.cpp
+-Stage3.h
+-Stage4.cpp
+-Stage4.h
+-Vacunatorio.cpp
+-Vacunatorio.h
+
+
+
 
 Para el caso de linux o bien Windows, para ejecutar por "consola" el programa debemos abrir el QtCreator.
 Dentro de este, en la seccion a la izquierda seleccionar la opción "Projects", luego dentro de "Build & Run"
