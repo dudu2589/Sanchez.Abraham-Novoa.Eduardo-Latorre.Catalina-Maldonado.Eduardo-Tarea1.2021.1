@@ -11,8 +11,7 @@ Archivos para el funcionamiento optimo de la tarea:
 -Stage4.Cpp
 -Vacunatorio
 
-En caso de usar Windows, abrir cmd, dirigirse a la carpeta donde guardó los archivos
-Ejemplo: cd/carpeta1/carperta2/carpetaN
+Para el caso de linux o bien Windows, para ejecutar por "consola" el programa debemos abrir el QtCreator. Dentro de este, en la seccion a la izquierda seleccionar la opción "Projects", luego dentro de "Build & Run" seleccionamos "Run", al hacer click en esta opción se abrirá la sección de "Run Settings", luego en el espacio de "Command line arguments" escribir "config.txt" (sin las comillas, o bien el nombre que le hayan puesto al txt, en nuestro caso lo entregamos como config) y seleccionar el cuadro de "Run in terminal". Finalmente en la sección de abajo a la izquierda del QtCreator hacer click en el icono de "play" se mostrara el funcionamiento del programa.
 
 Integrantes:
 Eduardo Novoa Rol:202030530-7
